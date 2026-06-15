@@ -260,6 +260,11 @@
   .encresult.show{display:block}
   @media screen{ .planilla.compact tbody tr:nth-child(n+5){display:none} }
   .planilla.compact::after{content:"En pantalla se ven 4 filas; al imprimir, la planilla sale con más filas para llenar la hoja."; display:block; margin-top:8px; font-size:.82rem; color:var(--ink-soft)}
+  .camino{background:var(--brand-50);border-radius:12px;padding:12px 14px;margin-top:14px}
+  .cam-t{margin:0 0 4px}.cam-s{margin:0 0 9px;font-size:.92rem;color:var(--ink);line-height:1.5}
+  .cam-bars{display:flex;gap:7px;flex-wrap:wrap}
+  .cb{font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px}
+  .cb-si{background:#dcf1e7;color:#1f7a55}.cb-med{background:#fff1cf;color:#8a6400}.cb-no{background:#eef3f6;color:#5a6b7a}
 </style>
 </head>
 <body>
@@ -2007,7 +2012,10 @@
       var h=getHist();
       dexport.classList.toggle('show', h.length>0);
       if(!h.length){ dhist.innerHTML=''; return; }
-      dhist.innerHTML='<p style="margin:14px 0 6px"><b>Mi registro ('+h.length+')</b></p>'+h.slice().reverse().map(function(x){
+      var si=0,med=0,no=0; h.forEach(function(x){ if(x.r==='si')si++; else if(x.r==='medias')med++; else if(x.r==='no')no++; });
+      var func=si+med;
+      var cam='<div class="camino"><p class="cam-t"><b>Mi camino</b></p><p class="cam-s">Lleva <b>'+h.length+'</b> '+(h.length===1?'paso probado':'pasos probados')+'. '+(func?'En <b>'+func+'</b> not\u00f3 alguna mejora. ':'')+'Cada intento ense\u00f1a: el cuidado mejora paso a paso.</p><div class="cam-bars">'+(si?'<span class="cb cb-si">'+si+' funcion\u00f3</span>':'')+(med?'<span class="cb cb-med">'+med+' a medias</span>':'')+(no?'<span class="cb cb-no">'+no+' todav\u00eda no</span>':'')+'</div></div>';
+      dhist.innerHTML=cam+'<p style="margin:16px 0 6px"><b>Mi registro ('+h.length+')</b></p>'+h.slice().reverse().map(function(x){
         return '<div class="it"><div class="meta">'+x.f+' · '+(LBL[x.r]||'sin marcar')+'</div><div><b>'+esc(x.c)+'</b></div><div>'+esc(x.p)+'</div></div>';
       }).join('');
     }
