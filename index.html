@@ -290,7 +290,7 @@
 </svg>
 
 <!-- ====== ONBOARDING ====== -->
-<div class="onb" id="onb" role="dialog" aria-label="Personalizar su guía">
+<div class="onb" id="onb" role="dialog" aria-label="Personalizar su guía" data-i18n-aria="onb.aria">
   <div class="inner">
     <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div>
     <h1 data-i18n="onb.title">Vamos a armar su guía</h1>
@@ -309,42 +309,42 @@
       <button class="opt" data-v="alto" data-i18n="onb.ed2">Terciario o universitario</button>
     </div>
 
-    <p class="qlabel">¿Usted es…?</p>
+    <p class="qlabel" data-i18n="onb.qperfil">¿Usted es…?</p>
     <div id="q-profile">
-      <button class="opt" data-v="familiar">Familiar o allegado/a</button>
-      <button class="opt" data-v="profesional">Cuidador/a profesional o de la salud</button>
+      <button class="opt" data-v="familiar" data-i18n="onb.pf1">Familiar o allegado/a</button>
+      <button class="opt" data-v="profesional" data-i18n="onb.pf2">Cuidador/a profesional o de la salud</button>
     </div>
 
-    <p class="qlabel">¿Cómo prefiere ver la letra?</p>
+    <p class="qlabel" data-i18n="onb.qletra">¿Cómo prefiere ver la letra?</p>
     <div id="q-letra">
-      <button class="opt" data-v="2" style="font-size:18px">Normal</button>
-      <button class="opt" data-v="3" style="font-size:22px">Grande</button>
-      <button class="opt" data-v="4" style="font-size:27px">Muy grande</button>
+      <button class="opt" data-v="2" style="font-size:18px" data-i18n="onb.l1">Normal</button>
+      <button class="opt" data-v="3" style="font-size:22px" data-i18n="onb.l2">Grande</button>
+      <button class="opt" data-v="4" style="font-size:27px" data-i18n="onb.l3">Muy grande</button>
     </div>
-    <p class="src" style="margin-top:-2px">Puede cambiarlo cuando quiera con <b>A−</b> / <b>A+</b> arriba.</p>
+    <p class="src" style="margin-top:-2px" data-i18n="onb.letranota">Puede cambiarlo cuando quiera con <b>A−</b> / <b>A+</b> arriba.</p>
 
     <div class="consent" id="onbConsentBox" style="margin-top:18px; text-align:left">
-      <p class="qlabel" style="margin-top:0">Una última cosa (opcional): colaborar</p>
-      <p class="src">Si quiere, puede ayudar a mejorar el cuidado de otras personas. Es <b>voluntario</b>, <b>anónimo</b> y <b>no cambia la atención</b>. Puede usar toda la app sin aceptar, y revocar cuando quiera.</p>
+      <p class="qlabel" style="margin-top:0" data-i18n="onb.colab.h">Una última cosa (opcional): colaborar</p>
+      <p class="src" data-i18n="onb.colab.p">Si quiere, puede ayudar a mejorar el cuidado de otras personas. Es <b>voluntario</b>, <b>anónimo</b> y <b>no cambia la atención</b>. Puede usar toda la app sin aceptar, y revocar cuando quiera.</p>
       <details>
-        <summary>Leer en pocas palabras</summary>
+        <summary data-i18n="onb.colab.sum">Leer en pocas palabras</summary>
         <div class="body">
           <ul class="avisos">
-            <li>Sus respuestas se guardan en este dispositivo. Solo se comparten si usted acepta, y siempre de forma anónima (sin su nombre ni datos de contacto).</li>
-            <li>Pueden usarse para <b>investigación</b> sobre la sobrecarga y el cuidado, y a futuro para <b>entrenar una herramienta de inteligencia artificial</b> que ayude a otros cuidadores.</li>
-            <li>Cada nuevo uso requiere la aprobación de un <b>Comité de Ética</b>. Nunca se venden ni se usan con fines comerciales.</li>
-            <li>Puede <b>revocar</b> su autorización cuando quiera desde <b>Colaborar › Su consentimiento</b>, donde está el texto completo (Ley 25.326 de datos personales y Ley 26.529 de derechos del paciente).</li>
+            <li data-i18n="onb.colab.li1">Sus respuestas se guardan en este dispositivo. Solo se comparten si usted acepta, y siempre de forma anónima (sin su nombre ni datos de contacto).</li>
+            <li data-i18n="onb.colab.li2">Pueden usarse para <b>investigación</b> sobre la sobrecarga y el cuidado, y a futuro para <b>entrenar una herramienta de inteligencia artificial</b> que ayude a otros cuidadores.</li>
+            <li data-i18n="onb.colab.li3">Cada nuevo uso requiere la aprobación de un <b>Comité de Ética</b>. Nunca se venden ni se usan con fines comerciales.</li>
+            <li data-i18n="onb.colab.li4">Puede <b>revocar</b> su autorización cuando quiera desde <b>Colaborar › Su consentimiento</b>, donde está el texto completo (Ley 25.326 de datos personales y Ley 26.529 de derechos del paciente).</li>
           </ul>
         </div>
       </details>
-      <div class="chkrow"><input type="checkbox" id="onbConsent"><label for="onbConsent">Acepto que mis datos, de forma anónima y sujeto a la aprobación de un Comité de Ética, se usen para investigación sobre el cuidado y para entrenar una herramienta de inteligencia artificial que ayude a otros cuidadores. (Opcional)</label></div>
+      <div class="chkrow"><input type="checkbox" id="onbConsent"><label for="onbConsent" data-i18n="onb.consent.label">Acepto que mis datos, de forma anónima y sujeto a la aprobación de un Comité de Ética, se usen para investigación sobre el cuidado y para entrenar una herramienta de inteligencia artificial que ayude a otros cuidadores. (Opcional)</label></div>
     </div>
     <button class="start" id="onbStart" data-i18n="onb.start" disabled>Ver mi guía</button>
     <button class="skip" id="onbSkip" data-i18n="onb.skip">Prefiero ver todo sin personalizar</button>
   </div>
 </div>
 
-<div class="onb" id="home" role="dialog" aria-label="Inicio">
+<div class="onb" id="home" role="dialog" aria-label="Inicio" data-i18n-aria="home.aria">
   <div class="inner">
     <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div>
     <h1 data-i18n="hub.title">¿Qué necesita hoy?</h1>
@@ -366,11 +366,11 @@
     <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span>
     <span class="txt"><span class="n">KaizenAI</span><span class="s" data-i18n="top.sub">Cuidadores · Demencia</span></span>
   </div>
-  <div class="fontctl" role="group" aria-label="Tamaño de letra">
+  <div class="fontctl" role="group" aria-label="Tamaño de letra" data-i18n-aria="top.fontaria">
     <button id="langToggle" class="langbtn" type="button" aria-label="Cambiar a inglés">EN</button>
     <span class="lbl" data-i18n="top.letra">Letra</span>
-    <button id="fsDown" aria-label="Achicar letra" title="Achicar letra">A<small>−</small></button>
-    <button id="fsUp" aria-label="Agrandar letra" title="Agrandar letra">A<small>+</small></button>
+    <button id="fsDown" aria-label="Achicar letra" title="Achicar letra" data-i18n-aria="top.fsdown" data-i18n-title="top.fsdown">A<small>−</small></button>
+    <button id="fsUp" aria-label="Agrandar letra" title="Agrandar letra" data-i18n-aria="top.fsup" data-i18n-title="top.fsup">A<small>+</small></button>
   </div>
 </div>
 
@@ -1840,7 +1840,7 @@
 
 
 
-<nav class="bottomnav" aria-label="Secciones">
+<nav class="bottomnav" aria-label="Secciones" data-i18n-aria="nav.aria">
   <button data-tab="entender" aria-pressed="true"><svg aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="nav.entender">Entender</span></button>
   <button data-tab="hacer" aria-pressed="false"><svg aria-hidden="true"><use href="#i-shield"/></svg><span data-i18n="nav.hacer">Qué hacer</span></button>
   <button data-tab="cuidarse" aria-pressed="false"><svg aria-hidden="true"><use href="#i-heart"/></svg><span data-i18n="nav.cuidarse">Cuidarme</span></button>
@@ -1888,7 +1888,34 @@
  "ban.urg": "First: is it an emergency?",
  "top.letra": "Text",
  "meta.title": "KaizenAI — Caregiver guide (Dementia)",
- "meta.desc": "Personalized guide to care for a person with dementia and to take care of yourself. What to do in each situation, based on what is hardest for you today."
+ "meta.desc": "Personalized guide to care for a person with dementia and to take care of yourself. What to do in each situation, based on what is hardest for you today.",
+ "onb.aria": "Personalize your guide",
+ "onb.qperfil": "Are you…?",
+ "onb.pf1": "Family member or close friend",
+ "onb.pf2": "Professional or healthcare caregiver",
+ "onb.qletra": "How do you prefer the text size?",
+ "onb.l1": "Normal",
+ "onb.l2": "Large",
+ "onb.l3": "Very large",
+ "onb.letranota": "You can change it anytime with <b>A−</b> / <b>A+</b> at the top.",
+ "onb.colab.h": "One last thing (optional): collaborate",
+ "onb.colab.p": "If you wish, you can help improve care for other people. It is <b>voluntary</b>, <b>anonymous</b> and <b>does not change your care</b>. You can use the whole app without accepting, and withdraw whenever you want.",
+ "onb.colab.sum": "Read the short version",
+ "onb.colab.li1": "Your answers are saved on this device. They are only shared if you agree, and always anonymously (without your name or contact details).",
+ "onb.colab.li2": "They may be used for <b>research</b> on caregiver burden and care, and in the future to <b>train an artificial intelligence tool</b> that helps other caregivers.",
+ "onb.colab.li3": "Each new use requires approval from an <b>Ethics Committee</b>. They are never sold or used for commercial purposes.",
+ "onb.colab.li4": "You can <b>withdraw</b> your authorization whenever you want from <b>Collaborate › Your consent</b>, where the full text is available (Law 25.326 on personal data and Law 26.529 on patient rights).",
+ "onb.consent.label": "I agree that my data, anonymously and subject to approval from an Ethics Committee, may be used for research on care and to train an artificial intelligence tool that helps other caregivers. (Optional)",
+ "home.aria": "Home",
+ "top.fontaria": "Text size",
+ "top.fsdown": "Shrink text",
+ "top.fsup": "Enlarge text",
+ "nav.aria": "Sections",
+ "hub.recursos": "Find resources and materials",
+ "hub.comunidad": "Join the community",
+ "h.col.k": "Get involved",
+ "h.col.t": "Collaborate",
+ "h.col.l": "If you wish, you can help other caregivers and research. It is voluntary."
 }
 </script>
 
