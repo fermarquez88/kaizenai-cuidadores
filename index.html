@@ -2545,6 +2545,10 @@
 </script>
 
 <script>
+  // Idioma: helper global disponible desde el arranque (el IIFE de idioma actualiza window.__kzlang)
+  window.__kzlang = "es";
+  window.kzLang = function(){ return window.__kzlang; };
+  window.T = function(es, en){ return window.__kzlang === "en" ? en : es; };
   // ---- Tamaño de letra ----
   var sizes = [16, 18, 20, 23, 26], idx = 2;
   var down = document.getElementById('fsDown'), up = document.getElementById('fsUp');
@@ -3038,15 +3042,12 @@
     var anodes=[];
     ATTRMAP.forEach(function(m){ document.querySelectorAll("["+m[1]+"]").forEach(function(el){
       anodes.push({el:el,attr:m[0],key:el.getAttribute(m[1]),orig:el.getAttribute(m[0])}); }); });
-    window.kzLang=function(){ return cur; };   // idioma REALMENTE aplicado (no depende de persistir)
-    window.T=function(es,en){ return cur==="en"?en:es; };
-    var cur="es";   // el DOM arranca en espanol; solo tocamos innerHTML cuando cambia de verdad
     function apply(l){
       var en=(l==="en");
-      if(l!==cur){
+      if(l!==window.__kzlang){
         nodes.forEach(function(n){ var k=n.getAttribute("data-i18n"); n.innerHTML=(en&&DICT.en[k]!=null)?DICT.en[k]:orig[k]; });
         anodes.forEach(function(a){ var v=(en&&DICT.en[a.key]!=null)?DICT.en[a.key]:a.orig; if(v!=null) a.el.setAttribute(a.attr,v); });
-        cur=l;
+        window.__kzlang=l;
       }
       document.documentElement.lang=en?"en":"es";
       var tb=document.getElementById("langToggle"); if(tb){ tb.textContent=en?"ES":"EN"; tb.setAttribute("aria-label",en?"Switch to Spanish":"Cambiar a ingles"); }
