@@ -3038,8 +3038,8 @@
     var anodes=[];
     ATTRMAP.forEach(function(m){ document.querySelectorAll("["+m[1]+"]").forEach(function(el){
       anodes.push({el:el,attr:m[0],key:el.getAttribute(m[1]),orig:el.getAttribute(m[0])}); }); });
-    window.kzLang=function(){ try{ return localStorage.getItem("lang")==="en"?"en":"es"; }catch(e){ return "es"; } };
-    window.T=function(es,en){ return window.kzLang()==="en"?en:es; };
+    window.kzLang=function(){ return cur; };   // idioma REALMENTE aplicado (no depende de persistir)
+    window.T=function(es,en){ return cur==="en"?en:es; };
     var cur="es";   // el DOM arranca en espanol; solo tocamos innerHTML cuando cambia de verdad
     function apply(l){
       var en=(l==="en");
@@ -3076,13 +3076,13 @@
       var sc=mod.getAttribute('data-score'); if(!sc) return;
       var r=mod.querySelector('.encresult'); if(!r) return;
       var out='';
-      if(sc==='phq9'){ var a=sum(mod,'phq9_'); if(a.n<9){ r.classList.remove('show'); return; } var s=a.s; var b=s<5?'mínima':s<10?'leve':s<15?'moderada':s<20?'moderada a severa':'severa'; out='Ánimo (PHQ-9): '+s+'/27 — '+b+'. Orientativo, no diagnóstico.'; }
-      else if(sc==='gad7'){ var a=sum(mod,'gad7_'); if(a.n<7){ r.classList.remove('show'); return; } var s=a.s; var b=s<5?'mínima':s<10?'leve':s<15?'moderada':'grave'; out='Ansiedad (GAD-7): '+s+'/21 — '+b+'. Orientativo.'; }
-      else if(sc==='duke'){ var a=sum(mod,'duke_'); if(a.n<11){ r.classList.remove('show'); return; } var s=a.s; out='Apoyo social (Duke-UNC): '+s+'/55'+(s<32?' — apoyo social bajo (orientativo).':' — apoyo social adecuado.'); }
-      else if(sc==='pac'){ var a=sum(mod,'pac_'); if(a.n<9){ r.classList.remove('show'); return; } out='Aspectos positivos del cuidado: '+a.s+'/45. A mayor puntaje, más sentido y satisfacción en el cuidar.'; }
+      if(sc==='phq9'){ var a=sum(mod,'phq9_'); if(a.n<9){ r.classList.remove('show'); return; } var s=a.s; var b=s<5?T('mínima','minimal'):s<10?T('leve','mild'):s<15?T('moderada','moderate'):s<20?T('moderada a severa','moderately severe'):T('severa','severe'); out=T('Ánimo (PHQ-9): ','Mood (PHQ-9): ')+s+'/27 — '+b+T('. Orientativo, no diagnóstico.','. For guidance only, not a diagnosis.'); }
+      else if(sc==='gad7'){ var a=sum(mod,'gad7_'); if(a.n<7){ r.classList.remove('show'); return; } var s=a.s; var b=s<5?T('mínima','minimal'):s<10?T('leve','mild'):s<15?T('moderada','moderate'):T('grave','severe'); out=T('Ansiedad (GAD-7): ','Anxiety (GAD-7): ')+s+'/21 — '+b+T('. Orientativo.','. For guidance only.'); }
+      else if(sc==='duke'){ var a=sum(mod,'duke_'); if(a.n<11){ r.classList.remove('show'); return; } var s=a.s; out=T('Apoyo social (Duke-UNC): ','Social support (Duke-UNC): ')+s+'/55'+(s<32?T(' — apoyo social bajo (orientativo).',' — low social support (for guidance).'):T(' — apoyo social adecuado.',' — adequate social support.')); }
+      else if(sc==='pac'){ var a=sum(mod,'pac_'); if(a.n<9){ r.classList.remove('show'); return; } out=T('Aspectos positivos del cuidado: ','Positive aspects of caregiving: ')+a.s+T('/45. A mayor puntaje, más sentido y satisfacción en el cuidar.','/45. The higher the score, the more meaning and satisfaction in caregiving.'); }
       if(out){ r.textContent=out; r.classList.add('show'); }
     }
-    function prog(mod){ var ids={}; mod.querySelectorAll('.encq[data-q]').forEach(function(q){ if(q.style.display==='none') return; ids[q.dataset.q]=1; }); var tot=Object.keys(ids).length; var ans=0; for(var k in ids){ if(store[k]!=null && store[k]!=='') ans++; } var l=mod.querySelector('.encprog'); if(l) l.textContent = tot? (ans>=tot? '✓ completo' : (ans+' de '+tot)) : ''; }
+    function prog(mod){ var ids={}; mod.querySelectorAll('.encq[data-q]').forEach(function(q){ if(q.style.display==='none') return; ids[q.dataset.q]=1; }); var tot=Object.keys(ids).length; var ans=0; for(var k in ids){ if(store[k]!=null && store[k]!=='') ans++; } var l=mod.querySelector('.encprog'); if(l) l.textContent = tot? (ans>=tot? T('✓ completo','✓ complete') : (ans+T(' de ',' of ')+tot)) : ''; }
     box.querySelectorAll('.encbtn').forEach(function(b){ b.addEventListener('click', function(){
       var q=b.dataset.q;
       box.querySelectorAll('.encbtn[data-q="'+q+'"]').forEach(function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
@@ -3097,15 +3097,17 @@
     box.querySelectorAll('.encmod').forEach(function(m){ prog(m); band(m); });
     (function(){ var zo=document.getElementById('suZonaOtro'); if(zo && store['su_zona']==='otr') zo.style.display='block'; })();
     if((parseInt(store['phq9_9'],10)||0)>=1){ var sf=document.getElementById('phqSafety'); if(sf) sf.style.display='block'; }
+    document.addEventListener('kz:langchange', function(){ box.querySelectorAll('.encmod').forEach(function(m){ prog(m); band(m); }); });
   })();
-  (function(){ var w=document.getElementById("wipeData"); if(w) w.addEventListener("click", function(){ if(confirm("¿Borrar TODOS sus datos guardados en este dispositivo? No se puede deshacer.")){ try{ localStorage.clear(); }catch(e){} location.reload(); } }); })();
+  (function(){ var w=document.getElementById("wipeData"); if(w) w.addEventListener("click", function(){ if(confirm(T("¿Borrar TODOS sus datos guardados en este dispositivo? No se puede deshacer.","Delete ALL your data saved on this device? This cannot be undone."))){ try{ localStorage.clear(); }catch(e){} location.reload(); } }); })();
 </script>
 <script>
 (function(){
   var CFG={enabled:false, endpoint:""}; /* se ACTIVA solo con aval del CEI: enabled:true + endpoint */
   function anonId(){try{var k=localStorage.getItem("kz_anon");if(!k){k="a"+Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem("kz_anon",k);}return k;}catch(e){return "anon";}}
   function payload(){var g=function(k){try{return localStorage.getItem(k);}catch(e){return null;}};var enc={};try{enc=JSON.parse(g("enc_v1")||"{}");}catch(e){}var libres={};["tl_dificil","tl_ayuda","tl_pedido","su_zona_otro"].forEach(function(k){if(enc[k]){libres[k]=enc[k];delete enc[k];}});return {anon_id:anonId(),ts:new Date().toISOString(),app:"kaizenai",schema:"enc_v1",consent:g("cuid_consent"),bateria:enc,texto_libre_revision:libres};}
-  window.kzSubmit=function(){if(!CFG.enabled||!CFG.endpoint){alert("El envío se habilitará cuando el estudio tenga aval del Comité de Ética. ¡Gracias por querer ayudar a otros cuidadores!");return;}try{fetch(CFG.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload())}).then(function(){alert("¡Gracias! Su experiencia se compartió de forma anónima y va a ayudar a otros cuidadores.");}).catch(function(){alert("No se pudo enviar ahora. Pruebe más tarde.");});}catch(e){}};
+  var T=window.T||function(es,en){return es;};
+  window.kzSubmit=function(){if(!CFG.enabled||!CFG.endpoint){alert(T("El envío se habilitará cuando el estudio tenga aval del Comité de Ética. ¡Gracias por querer ayudar a otros cuidadores!","Submission will be enabled once the study has Ethics Committee approval. Thank you for wanting to help other caregivers!"));return;}try{fetch(CFG.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload())}).then(function(){alert(T("¡Gracias! Su experiencia se compartió de forma anónima y va a ayudar a otros cuidadores.","Thank you! Your experience was shared anonymously and will help other caregivers."));}).catch(function(){alert(T("No se pudo enviar ahora. Pruebe más tarde.","Could not send right now. Please try again later."));});}catch(e){}};
   window.addEventListener("load",function(){var w=document.getElementById("kzCollect");if(w)w.style.display=CFG.enabled?"block":"none";});
 })();
 </script>
