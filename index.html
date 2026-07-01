@@ -2666,7 +2666,7 @@
   function showHome(){
     var last=null; try{ last=JSON.parse(localStorage.getItem('cuid_last')||'null'); }catch(e){}
     var lb=document.getElementById('homeLast');
-    if(last && last.id && last.label){ lb.textContent='Seguir donde estaba: '+last.label; lb.dataset.id=last.id; lb.style.display=''; }
+    if(last && last.id && last.label){ lb.textContent=window.T('Seguir donde estaba: ','Continue where you left off: ')+last.label; lb.dataset.id=last.id; lb.style.display=''; }
     else{ lb.style.display='none'; }
     document.getElementById('home').classList.add('show'); window.scrollTo({top:0});
   }
@@ -2692,7 +2692,7 @@
       try{ localStorage.setItem('cuid_last', JSON.stringify({id:d.id, label:label})); }catch(e){}
     });
   });
-  (function(){ var br=document.querySelector('.brand'); if(br){ br.style.cursor='pointer'; br.setAttribute('title','Inicio'); br.addEventListener('click', showHome); } })();
+  (function(){ var br=document.querySelector('.brand'); if(br){ br.style.cursor='pointer'; br.setAttribute('title',window.T('Inicio','Home')); br.addEventListener('click', showHome); } })();
 
   // ---- Inicio ----
   (function init(){
@@ -2720,17 +2720,17 @@
         dexport=document.getElementById('dexport'), dsave=document.getElementById('dsave');
     if(!dc) return;
     var cur='';
-    var LBL={si:'Funcionó', medias:'A medias', no:'No funcionó'};
-    var MSG={si:'Genial. Si funcionó, manténgalo: eso es Evaluar, el ciclo DICE cerrado.',
-             medias:'Algo ayudó. Ajuste una cosa y vuelva a probar: DICE es un ciclo.',
-             no:'No pasa nada: el resultado también enseña. Vuelva a Investigar el disparador y cree otro plan.'};
+    function LBL(r){ return {si:window.T('Funcionó','Worked'), medias:window.T('A medias','Partly'), no:window.T('No funcionó','Did not work')}[r]; }
+    function MSG(r){ return {si:window.T('Genial. Si funcionó, manténgalo: eso es Evaluar, el ciclo DICE cerrado.','Great. If it worked, keep it: that is Evaluate, the DICE cycle complete.'),
+             medias:window.T('Algo ayudó. Ajuste una cosa y vuelva a probar: DICE es un ciclo.','It helped a little. Adjust one thing and try again: DICE is a cycle.'),
+             no:window.T('No pasa nada: el resultado también enseña. Vuelva a Investigar el disparador y cree otro plan.','That is okay: the result also teaches. Investigate the trigger again and create another plan.')}[r]; }
     function getHist(){ try{ return JSON.parse(localStorage.getItem('dice_hist')||'[]'); }catch(e){ return []; } }
     function setHist(h){ try{ localStorage.setItem('dice_hist', JSON.stringify(h)); }catch(e){} }
     function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function fecha(){ try{ return new Date().toLocaleDateString('es-AR'); }catch(e){ return ''; } }
     function showRes(r){ cur=r;
       document.querySelectorAll('.dres').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.r===r?'true':'false'); });
-      dfb.textContent=MSG[r]||''; dfb.classList.add('show');
+      dfb.textContent=MSG(r)||''; dfb.classList.add('show');
     }
     function render(){
       var h=getHist();
@@ -2738,9 +2738,9 @@
       if(!h.length){ dhist.innerHTML=''; return; }
       var si=0,med=0,no=0; h.forEach(function(x){ if(x.r==='si')si++; else if(x.r==='medias')med++; else if(x.r==='no')no++; });
       var func=si;
-      var cam='<div class="camino"><p class="cam-t"><b>Mi camino</b></p><p class="cam-s">Lleva <b>'+h.length+'</b> '+(h.length===1?'paso probado':'pasos probados')+'. '+(func?'En <b>'+func+'</b> not\u00f3 alguna mejora. ':'')+'Cada intento ense\u00f1a: el cuidado mejora paso a paso.</p><div class="cam-bars">'+(si?'<span class="cb cb-si">'+si+' funcion\u00f3</span>':'')+(med?'<span class="cb cb-med">'+med+' a medias</span>':'')+(no?'<span class="cb cb-no">'+no+' todav\u00eda no</span>':'')+'</div></div>';
-      dhist.innerHTML=cam+'<p style="margin:16px 0 6px"><b>Mi registro ('+h.length+')</b></p>'+h.slice().reverse().map(function(x){
-        return '<div class="it"><div class="meta">'+x.f+' · '+(LBL[x.r]||'sin marcar')+'</div><div><b>'+esc(x.c)+'</b></div><div>'+esc(x.p)+'</div></div>';
+      var cam='<div class="camino"><p class="cam-t"><b>'+window.T('Mi camino','My path')+'</b></p><p class="cam-s">'+window.T('Lleva <b>'+h.length+'</b> '+(h.length===1?'paso probado':'pasos probados'),'You have tried <b>'+h.length+'</b> '+(h.length===1?'step':'steps'))+'. '+(func?window.T('En <b>'+func+'</b> not\u00f3 alguna mejora. ','You noticed some improvement in <b>'+func+'</b>. '):'')+window.T('Cada intento ense\u00f1a: el cuidado mejora paso a paso.','Every attempt teaches: caregiving improves step by step.')+'</p><div class="cam-bars">'+(si?'<span class="cb cb-si">'+si+' '+window.T('funcion\u00f3','worked')+'</span>':'')+(med?'<span class="cb cb-med">'+med+' '+window.T('a medias','partly')+'</span>':'')+(no?'<span class="cb cb-no">'+no+' '+window.T('todav\u00eda no','not yet')+'</span>':'')+'</div></div>';
+      dhist.innerHTML=cam+'<p style="margin:16px 0 6px"><b>'+window.T('Mi registro','My log')+' ('+h.length+')</b></p>'+h.slice().reverse().map(function(x){
+        return '<div class="it"><div class="meta">'+x.f+' · '+(LBL(x.r)||window.T('sin marcar','not marked'))+'</div><div><b>'+esc(x.c)+'</b></div><div>'+esc(x.p)+'</div></div>';
       }).join('');
     }
     document.querySelectorAll('.dres').forEach(function(b){ b.addEventListener('click', function(){ showRes(b.dataset.r); }); });
@@ -2753,26 +2753,27 @@
       render();
     });
     function resumen(){
-      var t='Registro de cuidado (método DICE)\n\n';
-      getHist().forEach(function(x){ t+='• '+x.f+' — '+(LBL[x.r]||'sin marcar')+'\n  Conducta: '+x.c+'\n  Plan: '+x.p+'\n\n'; });
+      var t=window.T('Registro de cuidado (método DICE)','Caregiving log (DICE method)')+'\n\n';
+      getHist().forEach(function(x){ t+='• '+x.f+' — '+(LBL(x.r)||window.T('sin marcar','not marked'))+'\n  '+window.T('Conducta','Behavior')+': '+x.c+'\n  '+window.T('Plan','Plan')+': '+x.p+'\n\n'; });
       return t;
     }
     var dcopy=document.getElementById('dcopy'), ddl=document.getElementById('ddl');
     dcopy.addEventListener('click', function(){
       var t=resumen();
       if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(t).then(function(){ dcopy.textContent='¡Copiado!'; setTimeout(function(){ dcopy.textContent='Copiar para mi médico'; },1500); });
-      } else { window.prompt('Copie su registro:', t); }
+        navigator.clipboard.writeText(t).then(function(){ dcopy.textContent=window.T('¡Copiado!','Copied!'); setTimeout(function(){ dcopy.textContent=window.T('Copiar para mi médico','Copy for my doctor'); },1500); });
+      } else { window.prompt(window.T('Copie su registro:','Copy your log:'), t); }
     });
     ddl.addEventListener('click', function(){
       var perfil=null; try{ perfil=JSON.parse(localStorage.getItem('cuid_onb')||'null'); }catch(e){}
       var data={ tipo:'registro-dice', perfil:perfil, registros:getHist() };
       var blob=new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
       var url=URL.createObjectURL(blob); var a=document.createElement('a');
-      a.href=url; a.download='mi-registro-cuidado.json'; document.body.appendChild(a); a.click();
+      a.href=url; a.download=window.T('mi-registro-cuidado.json','my-caregiving-log.json'); document.body.appendChild(a); a.click();
       document.body.removeChild(a); URL.revokeObjectURL(url);
     });
     render();
+    document.addEventListener('kz:langchange', function(){ render(); if(cur){ showRes(cur); } });
   })();
 
   // ---- Toggle de registro (sencillo/experto) ----
@@ -2791,16 +2792,16 @@
     var qs=document.querySelectorAll('#acq .acbtn'); if(!qs.length) return;
     var N=7, ans={};
     function band(s){
-      if(s<17) return {t:'Sin sobrecarga intensa', d:'Por ahora, de forma orientativa, no aparece una sobrecarga intensa. Aun así, el desgaste se acumula de a poco: cuide su descanso, sus vínculos y sus controles de salud.'};
-      return {t:'Sobrecarga intensa (señal de alerta)', d:'Estas respuestas sugieren sobrecarga intensa. No es un diagnóstico, pero sí una señal para pedir ayuda, repartir el cuidado y buscar respiro y apoyo profesional. Compártalo con su médico. Si aparecen ideas de hacerse daño o la sensación de no poder más, busque ayuda de inmediato: <a href="tel:911" style="color:inherit"><b>911</b></a> o <a href="tel:107" style="color:inherit"><b>107</b></a>, la línea nacional <a href="tel:+541152751135" style="color:inherit"><b>(011) 5275-1135</b></a>, o una guardia.'};
+      if(s<17) return {t:window.T('Sin sobrecarga intensa','No intense burden'), d:window.T('Por ahora, de forma orientativa, no aparece una sobrecarga intensa. Aun así, el desgaste se acumula de a poco: cuide su descanso, sus vínculos y sus controles de salud.','For now, as a rough guide, there is no sign of intense burden. Even so, strain builds up little by little: take care of your rest, your relationships, and your health checkups.')};
+      return {t:window.T('Sobrecarga intensa (señal de alerta)','Intense burden (warning sign)'), d:window.T('Estas respuestas sugieren sobrecarga intensa. No es un diagnóstico, pero sí una señal para pedir ayuda, repartir el cuidado y buscar respiro y apoyo profesional. Compártalo con su médico. Si aparecen ideas de hacerse daño o la sensación de no poder más, busque ayuda de inmediato: <a href="tel:911" style="color:inherit"><b>911</b></a> o <a href="tel:107" style="color:inherit"><b>107</b></a>, la línea nacional <a href="tel:+541152751135" style="color:inherit"><b>(011) 5275-1135</b></a>, o una guardia.','These answers suggest intense burden. This is not a diagnosis, but it is a signal to ask for help, share the caregiving, and seek respite and professional support. Share it with your doctor. If thoughts of harming yourself or a feeling that you cannot go on appear, seek help right away: <a href="tel:911" style="color:inherit"><b>911</b></a> or <a href="tel:107" style="color:inherit"><b>107</b></a>, the national line <a href="tel:+541152751135" style="color:inherit"><b>(011) 5275-1135</b></a>, or an emergency room.')};
     }
     function mesAnio(){ try{ var d=new Date(); return ('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear(); }catch(e){ return ''; } }
     function show(){
       var keys=Object.keys(ans), r=document.getElementById('acresult'), bt=document.getElementById('zaritBtns');
-      if(keys.length<N){ r.innerHTML='<div class="score">Respondió '+keys.length+' de '+N+'</div><p>Complete las 7 frases para ver su resultado orientativo.</p>'; r.classList.add('show'); if(bt) bt.style.display='none'; return; }
+      if(keys.length<N){ r.innerHTML='<div class="score">'+window.T('Respondió','Answered')+' '+keys.length+' '+window.T('de','of')+' '+N+'</div><p>'+window.T('Complete las 7 frases para ver su resultado orientativo.','Complete the 7 statements to see your guidance result.')+'</p>'; r.classList.add('show'); if(bt) bt.style.display='none'; return; }
       var s=0; for(var k in ans) s+=ans[k];
       var b=band(s);
-      r.innerHTML='<div class="score">Su puntaje: '+s+' de 28 — '+b.t+' (orientativo)</div><p>'+b.d+'</p>';
+      r.innerHTML='<div class="score">'+window.T('Su puntaje:','Your score:')+' '+s+' '+window.T('de 28','of 28')+' — '+b.t+' '+window.T('(orientativo)','(for guidance)')+'</div><p>'+b.d+'</p>';
       r.classList.add('show');
       try{ localStorage.setItem('zarit_last', JSON.stringify({tipo:'zarit7', s:s, banda:b.t, fecha:mesAnio()})); }catch(e){}
       if(bt) bt.style.display='';
@@ -2812,9 +2813,10 @@
     }); });
     var zc=document.getElementById('zaritCopy'); if(zc) zc.addEventListener('click', function(){
       var s=0, n=Object.keys(ans).length; for(var k in ans) s+=ans[k];
-      var t='Autochequeo de sobrecarga (Zarit reducida, 7 items)\n'+(n<N?('Respondidas '+n+' de '+N+'\n'):('Puntaje: '+s+' de 28\n'))+'Fecha: '+mesAnio()+'\n(Resultado orientativo, no diagnostico.)';
-      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ zc.textContent='Copiado'; setTimeout(function(){ zc.textContent='Copiar para mi médico'; },1800); }, function(){}); }
+      var t=window.T('Autochequeo de sobrecarga (Zarit reducida, 7 items)','Burden self-check (short Zarit, 7 items)')+'\n'+(n<N?(window.T('Respondidas','Answered')+' '+n+' '+window.T('de','of')+' '+N+'\n'):(window.T('Puntaje:','Score:')+' '+s+' '+window.T('de 28','of 28')+'\n'))+window.T('Fecha:','Date:')+' '+mesAnio()+'\n'+window.T('(Resultado orientativo, no diagnostico.)','(Result for guidance only, not a diagnosis.)');
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ zc.textContent=window.T('Copiado','Copied'); setTimeout(function(){ zc.textContent=window.T('Copiar para mi médico','Copy for my doctor'); },1800); }, function(){}); }
     });
+    document.addEventListener('kz:langchange', function(){ if(Object.keys(ans).length){ show(); } });
   })();
 
   // ---- Cuestionario completo Zarit-22 (Colaborar) ----
@@ -2822,16 +2824,16 @@
     var qs=document.querySelectorAll('#acq22 .acbtn'); if(!qs.length) return;
     var N=22, ans={};
     function band(s){
-      if(s<47) return 'Sin sobrecarga o sobrecarga leve';
-      if(s<=55) return 'Sobrecarga leve a moderada';
-      return 'Sobrecarga intensa';
+      if(s<47) return window.T('Sin sobrecarga o sobrecarga leve','No burden or mild burden');
+      if(s<=55) return window.T('Sobrecarga leve a moderada','Mild to moderate burden');
+      return window.T('Sobrecarga intensa','Intense burden');
     }
     function mesAnio(){ try{ var d=new Date(); return ('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear(); }catch(e){ return ''; } }
     function show(){
       var keys=Object.keys(ans), r=document.getElementById('acresult22'), bt=document.getElementById('zarit22Btns');
-      if(keys.length<N){ r.innerHTML='<div class="score">Respondió '+keys.length+' de '+N+'</div>'; r.classList.add('show'); if(bt) bt.style.display='none'; return; }
+      if(keys.length<N){ r.innerHTML='<div class="score">'+window.T('Respondió','Answered')+' '+keys.length+' '+window.T('de','of')+' '+N+'</div>'; r.classList.add('show'); if(bt) bt.style.display='none'; return; }
       var s=0; for(var k in ans) s+=ans[k]; var t=band(s);
-      r.innerHTML='<div class="score">Su puntaje: '+s+' de 88 — '+t+' (orientativo)</div><p>Resultado orientativo, no diagnóstico. Converse el resultado con su profesional.</p>';
+      r.innerHTML='<div class="score">'+window.T('Su puntaje:','Your score:')+' '+s+' '+window.T('de 88','of 88')+' — '+t+' '+window.T('(orientativo)','(for guidance)')+'</div><p>'+window.T('Resultado orientativo, no diagnóstico. Converse el resultado con su profesional.','Result for guidance only, not a diagnosis. Discuss the result with your professional.')+'</p>';
       r.classList.add('show');
       try{ localStorage.setItem('zarit22_last', JSON.stringify({tipo:'zarit22', s:s, banda:t, fecha:mesAnio()})); }catch(e){}
       if(bt) bt.style.display='';
@@ -2843,14 +2845,15 @@
     }); });
     var zc=document.getElementById('zarit22Copy'); if(zc) zc.addEventListener('click', function(){
       var s=0, n=Object.keys(ans).length; for(var k in ans) s+=ans[k];
-      var t='Cuestionario de sobrecarga (Zarit, 22 items)\n'+(n<N?('Respondidas '+n+' de '+N+'\n'):('Puntaje: '+s+' de 88 - '+band(s)+'\n'))+'Fecha: '+mesAnio()+'\n(Resultado orientativo, no diagnostico.)';
-      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ zc.textContent='Copiado'; setTimeout(function(){ zc.textContent='Copiar para mi médico'; },1800); }, function(){}); }
+      var t=window.T('Cuestionario de sobrecarga (Zarit, 22 items)','Burden questionnaire (Zarit, 22 items)')+'\n'+(n<N?(window.T('Respondidas','Answered')+' '+n+' '+window.T('de','of')+' '+N+'\n'):(window.T('Puntaje:','Score:')+' '+s+' '+window.T('de 88','of 88')+' - '+band(s)+'\n'))+window.T('Fecha:','Date:')+' '+mesAnio()+'\n'+window.T('(Resultado orientativo, no diagnostico.)','(Result for guidance only, not a diagnosis.)');
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ zc.textContent=window.T('Copiado','Copied'); setTimeout(function(){ zc.textContent=window.T('Copiar para mi médico','Copy for my doctor'); },1800); }, function(){}); }
     });
+    document.addEventListener('kz:langchange', function(){ if(Object.keys(ans).length){ show(); } });
   })();
 
   // ---- Imprimir planillas ----
-  function printEl(id){ var el=document.getElementById(id); if(!el) return; var w=window.open("","_blank"); if(!w){ alert("Permita las ventanas emergentes para imprimir."); return; }
-    w.document.write("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Imprimir</title><style>@page{margin:14mm}html,body{height:100%;margin:0}body{font-family:Arial,Helvetica,sans-serif;color:#111}.pltitle{font-size:18px;font-weight:700;margin:0 0 6px}.psub{color:#555;font-size:13px;margin:0 0 12px}table{width:100%;height:100%;border-collapse:collapse}th,td{border:1px solid #777;padding:8px;font-size:13px;text-align:left;vertical-align:top}</style></head><body>"+el.innerHTML+"</body></html>");
+  function printEl(id){ var el=document.getElementById(id); if(!el) return; var w=window.open("","_blank"); if(!w){ alert(window.T("Permita las ventanas emergentes para imprimir.","Please allow pop-up windows to print.")); return; }
+    w.document.write("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>"+window.T("Imprimir","Print")+"</title><style>@page{margin:14mm}html,body{height:100%;margin:0}body{font-family:Arial,Helvetica,sans-serif;color:#111}.pltitle{font-size:18px;font-weight:700;margin:0 0 6px}.psub{color:#555;font-size:13px;margin:0 0 12px}table{width:100%;height:100%;border-collapse:collapse}th,td{border:1px solid #777;padding:8px;font-size:13px;text-align:left;vertical-align:top}</style></head><body>"+el.innerHTML+"</body></html>");
     w.document.close(); w.focus(); setTimeout(function(){ try{ w.print(); }catch(e){} }, 350); }
   document.querySelectorAll(".printbtn").forEach(function(b){ b.addEventListener("click", function(){ printEl(b.dataset.target); }); });
 
@@ -2859,7 +2862,7 @@
     var chk=document.getElementById('consentChk'); if(!chk) return;
     try{ chk.checked = localStorage.getItem('cuid_consent')==='1'; }catch(e){}
     var st=document.getElementById('consentState');
-    function refl(){ if(!st) return; if(chk.checked){ var f=''; try{ var m=JSON.parse(localStorage.getItem('cuid_consent_meta')||'null'); if(m&&m.fecha){ f=' (autorizado el '+new Date(m.fecha).toLocaleDateString('es-AR')+', '+(m.version||'v1')+')'; } }catch(e){} st.textContent='Su autorización quedó registrada en este dispositivo'+f+'. Puede desmarcarla cuando quiera.'; } else { st.textContent=''; } }
+    function refl(){ if(!st) return; if(chk.checked){ var f=''; try{ var m=JSON.parse(localStorage.getItem('cuid_consent_meta')||'null'); if(m&&m.fecha){ f=window.T(' (autorizado el ',' (authorized on ')+new Date(m.fecha).toLocaleDateString(window.T('es-AR','en-US'))+', '+(m.version||'v1')+')'; } }catch(e){} st.textContent=window.T('Su autorización quedó registrada en este dispositivo','Your authorization was recorded on this device')+f+window.T('. Puede desmarcarla cuando quiera.','. You can uncheck it whenever you want.'); } else { st.textContent=''; } }
     refl();
     chk.addEventListener('change', function(){ try{ var on=chk.checked; localStorage.setItem('cuid_consent', on?'1':'0'); if(on){ localStorage.setItem('cuid_consent_meta', JSON.stringify({fecha:new Date().toISOString(), version:'v1', via:'colaborar'})); } else { try{ var m=JSON.parse(localStorage.getItem('cuid_consent_meta')||'{}'); m.revocado=new Date().toISOString(); localStorage.setItem('cuid_consent_meta', JSON.stringify(m)); }catch(e){} } }catch(e){} refl(); });
     function gather(){
@@ -2868,41 +2871,42 @@
       return o;
     }
     function txtResumen(){
-      var L=['RESUMEN PARA MI PROFESIONAL - Guia para cuidadores',''];
-      try{ var onb=JSON.parse(localStorage.getItem('cuid_onb')||'null'); if(onb){ L.push('Perfil: rol '+(onb.profile||'-')+', situacion principal '+(onb.prob||'-')+', como esta '+(onb.burden||'-')+(onb.edad?(', edad '+onb.edad):'')+(onb.educacion?(', estudios '+onb.educacion):'')); L.push(''); } }catch(e){}
-      var RL={si:'funcionó', medias:'a medias', no:'no funcionó'};
-      try{ var dh=JSON.parse(localStorage.getItem('dice_hist')||'[]'); if(dh && dh.length){ L.push('Registros de conductas (metodo DICE): '+dh.length); dh.slice(-12).forEach(function(d){ L.push('- '+(d.f||'')+' | '+(d.c||'')+' -> '+(d.p||'')+' [resultado: '+(RL[d.r]||'sin marcar')+']'); }); L.push(''); } }catch(e){}
-      L.push('Nota: datos cargados por el cuidador, con valor orientativo (no diagnostico). No incluye datos que identifiquen a la persona.');
+      var L=[window.T('RESUMEN PARA MI PROFESIONAL - Guia para cuidadores','SUMMARY FOR MY PROFESSIONAL - Caregiver guide'),''];
+      try{ var onb=JSON.parse(localStorage.getItem('cuid_onb')||'null'); if(onb){ L.push(window.T('Perfil: rol ','Profile: role ')+(onb.profile||'-')+window.T(', situacion principal ',', main situation ')+(onb.prob||'-')+window.T(', como esta ',', how you are ')+(onb.burden||'-')+(onb.edad?(window.T(', edad ',', age ')+onb.edad):'')+(onb.educacion?(window.T(', estudios ',', education ')+onb.educacion):'')); L.push(''); } }catch(e){}
+      var RL={si:window.T('funcionó','worked'), medias:window.T('a medias','partly'), no:window.T('no funcionó','did not work')};
+      try{ var dh=JSON.parse(localStorage.getItem('dice_hist')||'[]'); if(dh && dh.length){ L.push(window.T('Registros de conductas (metodo DICE): ','Behavior logs (DICE method): ')+dh.length); dh.slice(-12).forEach(function(d){ L.push('- '+(d.f||'')+' | '+(d.c||'')+' -> '+(d.p||'')+' ['+window.T('resultado: ','result: ')+(RL[d.r]||window.T('sin marcar','not marked'))+']'); }); L.push(''); } }catch(e){}
+      L.push(window.T('Nota: datos cargados por el cuidador, con valor orientativo (no diagnostico). No incluye datos que identifiquen a la persona.','Note: data entered by the caregiver, for guidance only (not a diagnosis). It does not include data that identify the person.'));
       return L.join('\n');
     }
-    function dl(name, content, type){ try{ var b=new Blob([content], {type:type}); var u=URL.createObjectURL(b); var a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(u); a.remove(); },120); }catch(e){ alert('No se pudo descargar en este navegador.'); } }
+    function dl(name, content, type){ try{ var b=new Blob([content], {type:type}); var u=URL.createObjectURL(b); var a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(u); a.remove(); },120); }catch(e){ alert(window.T('No se pudo descargar en este navegador.','Could not download in this browser.')); } }
     function rfecha(){ try{ var d=new Date(); return ('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear(); }catch(e){ return ''; } }
     function wrapDoc(inner){ return '<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns=\"http://www.w3.org/TR/REC-html40\"><head><meta charset=\"utf-8\"></head><body style=\"font-family:Calibri,Arial,sans-serif;color:#222;line-height:1.45\">'+inner+'</body></html>'; }
     function buildReport(){ var es=function(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
-      var H='<h1 style=\"color:#0a4f60\">Informe para el profesional</h1><p>KaizenAI \u2014 Gu\u00eda para cuidadores. Dr. Fernando M\u00e1rquez (Neurolog\u00eda). Fecha: '+rfecha()+'.</p><p style=\"font-size:12px;color:#b1311f\"><b>Confidencial:</b> contiene datos de salud sensibles del cuidador. Comp\u00e1rtalo solo por canales seguros con su profesional de confianza.</p><hr>';
-      try{ var o=JSON.parse(localStorage.getItem('cuid_onb')||'null'); if(o){ H+='<h2>Perfil</h2><p>Rol: '+(o.profile||'-')+(o.edad?(' \u00b7 edad '+o.edad):'')+(o.educacion?(' \u00b7 estudios '+o.educacion):'')+'.</p>'; } }catch(e){}
-      try{ var z=JSON.parse(localStorage.getItem('zarit_last')||'null')||JSON.parse(localStorage.getItem('zarit22_last')||'null'); if(z){ H+='<h2>Autochequeo de sobrecarga (Zarit)</h2><p>Puntaje '+z.s+' \u2014 '+(z.banda||'')+' ('+(z.fecha||'')+'). Orientativo, no diagn\u00f3stico.</p>'; } }catch(e){}
-      try{ var RL={si:'funcion\u00f3',medias:'a medias',no:'no funcion\u00f3'}; var dh=JSON.parse(localStorage.getItem('dice_hist')||'[]'); if(dh&&dh.length){ H+='<h2>Registro de conductas (m\u00e9todo DICE) \u2014 '+dh.length+'</h2><table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" style=\"border-collapse:collapse;width:100%\"><tr style=\"background:#e7f1f3\"><td><b>Fecha</b></td><td><b>Conducta</b></td><td><b>Plan probado</b></td><td><b>Resultado</b></td></tr>'; dh.forEach(function(x){ H+='<tr><td>'+es(x.f)+'</td><td>'+es(x.c)+'</td><td>'+es(x.p)+'</td><td>'+(RL[x.r]||'-')+'</td></tr>'; }); H+='</table>'; } }catch(e){}
-      try{ var pc=localStorage.getItem('planC'); if(pc){ H+='<h2>Paso de autocuidado</h2><p>'+es(pc)+'</p>'; } }catch(e){}
+      var H='<h1 style=\"color:#0a4f60\">'+window.T('Informe para el profesional','Report for the professional')+'</h1><p>KaizenAI \u2014 '+window.T('Gu\u00eda para cuidadores. Dr. Fernando M\u00e1rquez (Neurolog\u00eda). Fecha: ','Caregiver guide. Dr. Fernando M\u00e1rquez (Neurology). Date: ')+rfecha()+'.</p><p style=\"font-size:12px;color:#b1311f\"><b>'+window.T('Confidencial:','Confidential:')+'</b> '+window.T('contiene datos de salud sensibles del cuidador. Comp\u00e1rtalo solo por canales seguros con su profesional de confianza.','it contains sensitive health data about the caregiver. Share it only through secure channels with the professional you trust.')+'</p><hr>';
+      try{ var o=JSON.parse(localStorage.getItem('cuid_onb')||'null'); if(o){ H+='<h2>'+window.T('Perfil','Profile')+'</h2><p>'+window.T('Rol: ','Role: ')+(o.profile||'-')+(o.edad?(' \u00b7 '+window.T('edad ','age ')+o.edad):'')+(o.educacion?(' \u00b7 '+window.T('estudios ','education ')+o.educacion):'')+'.</p>'; } }catch(e){}
+      try{ var z=JSON.parse(localStorage.getItem('zarit_last')||'null')||JSON.parse(localStorage.getItem('zarit22_last')||'null'); if(z){ H+='<h2>'+window.T('Autochequeo de sobrecarga (Zarit)','Burden self-check (Zarit)')+'</h2><p>'+window.T('Puntaje ','Score ')+z.s+' \u2014 '+(z.banda||'')+' ('+(z.fecha||'')+'). '+window.T('Orientativo, no diagn\u00f3stico.','For guidance only, not a diagnosis.')+'</p>'; } }catch(e){}
+      try{ var RL={si:window.T('funcion\u00f3','worked'),medias:window.T('a medias','partly'),no:window.T('no funcion\u00f3','did not work')}; var dh=JSON.parse(localStorage.getItem('dice_hist')||'[]'); if(dh&&dh.length){ H+='<h2>'+window.T('Registro de conductas (m\u00e9todo DICE)','Behavior log (DICE method)')+' \u2014 '+dh.length+'</h2><table border=\"1\" cellspacing=\"0\" cellpadding=\"6\" style=\"border-collapse:collapse;width:100%\"><tr style=\"background:#e7f1f3\"><td><b>'+window.T('Fecha','Date')+'</b></td><td><b>'+window.T('Conducta','Behavior')+'</b></td><td><b>'+window.T('Plan probado','Plan tried')+'</b></td><td><b>'+window.T('Resultado','Result')+'</b></td></tr>'; dh.forEach(function(x){ H+='<tr><td>'+es(x.f)+'</td><td>'+es(x.c)+'</td><td>'+es(x.p)+'</td><td>'+(RL[x.r]||'-')+'</td></tr>'; }); H+='</table>'; } }catch(e){}
+      try{ var pc=localStorage.getItem('planC'); if(pc){ H+='<h2>'+window.T('Paso de autocuidado','Self-care step')+'</h2><p>'+es(pc)+'</p>'; } }catch(e){}
       try{ var enc=JSON.parse(localStorage.getItem('enc_v1')||'{}');
         if(enc && Object.keys(enc).length){
-          function ss(p,n){ var s=0,c=0; for(var i=1;i<=n;i++){ var v=enc[p+i]; if(v!=null && v!==''){ s+=parseInt(v,10)||0; c++; } } return c? (s+' (resp. '+c+'/'+n+')') : '—'; }
-          H+='<h2>Cuestionarios de investigación</h2><ul>';
-          H+='<li>Ánimo (PHQ-9): '+ss('phq9_',9)+'</li>';
-          H+='<li>Ansiedad (GAD-7): '+ss('gad7_',7)+'</li>';
-          H+='<li>Apoyo social (Duke-UNC-11): '+ss('duke_',11)+'</li>';
-          H+='<li>Aspectos positivos (PAC): '+ss('pac_',9)+'</li>';
+          function ss(p,n){ var s=0,c=0; for(var i=1;i<=n;i++){ var v=enc[p+i]; if(v!=null && v!==''){ s+=parseInt(v,10)||0; c++; } } return c? (s+window.T(' (resp. ',' (ans. ')+c+'/'+n+')') : '—'; }
+          H+='<h2>'+window.T('Cuestionarios de investigación','Research questionnaires')+'</h2><ul>';
+          H+='<li>'+window.T('Ánimo (PHQ-9): ','Mood (PHQ-9): ')+ss('phq9_',9)+'</li>';
+          H+='<li>'+window.T('Ansiedad (GAD-7): ','Anxiety (GAD-7): ')+ss('gad7_',7)+'</li>';
+          H+='<li>'+window.T('Apoyo social (Duke-UNC-11): ','Social support (Duke-UNC-11): ')+ss('duke_',11)+'</li>';
+          H+='<li>'+window.T('Aspectos positivos (PAC): ','Positive aspects (PAC): ')+ss('pac_',9)+'</li>';
           H+='</ul>';
-          var tl=[['tl_dificil','Lo más difícil'],['tl_ayuda','Lo que ayuda'],['tl_pedido','Pedido']]; var th='';
+          var tl=[['tl_dificil',window.T('Lo más difícil','The hardest part')],['tl_ayuda',window.T('Lo que ayuda','What helps')],['tl_pedido',window.T('Pedido','Request')]]; var th='';
           tl.forEach(function(k){ if(enc[k[0]]){ th+='<p><b>'+k[1]+':</b> '+es(enc[k[0]])+'</p>'; } });
-          if(th) H+='<h3>En sus palabras</h3>'+th;
+          if(th) H+='<h3>'+window.T('En sus palabras','In your words')+'</h3>'+th;
         }
       }catch(e){}
       /* datos crudos JSON removidos del export por privacidad: el informe es ejecutivo y legible */
-      H+='<hr><p style=\"font-size:11px;color:#666\">Datos cargados por el cuidador, con valor orientativo (no diagn\u00f3stico). No incluye datos que identifiquen a la persona.</p>'; return H; }
-    var bD=document.getElementById('expDown'); if(bD) bD.addEventListener('click', function(){ dl('informe-cuidador.doc', wrapDoc(buildReport()), 'application/msword'); });
-    var cDoc=document.getElementById('consentDoc'); if(cDoc) cDoc.addEventListener('click', function(){ var el=document.getElementById('consentFullDoc'); dl('consentimiento-completo.doc', wrapDoc(el?el.innerHTML:''), 'application/msword'); });
-    var bC=document.getElementById('expCopy'); if(bC) bC.addEventListener('click', function(){ var t=txtResumen(); var ok=function(){ bC.textContent='Copiado'; setTimeout(function(){ bC.textContent='Copiar para mi médico'; },1800); }; if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, function(){ dl('resumen-medico.txt', t, 'text/plain'); }); } else { dl('resumen-medico.txt', t, 'text/plain'); } });
+      H+='<hr><p style=\"font-size:11px;color:#666\">'+window.T('Datos cargados por el cuidador, con valor orientativo (no diagn\u00f3stico). No incluye datos que identifiquen a la persona.','Data entered by the caregiver, for guidance only (not a diagnosis). It does not include data that identify the person.')+'</p>'; return H; }
+    var bD=document.getElementById('expDown'); if(bD) bD.addEventListener('click', function(){ dl(window.T('informe-cuidador.doc','caregiver-report.doc'), wrapDoc(buildReport()), 'application/msword'); });
+    var cDoc=document.getElementById('consentDoc'); if(cDoc) cDoc.addEventListener('click', function(){ var el=document.getElementById('consentFullDoc'); dl(window.T('consentimiento-completo.doc','full-consent.doc'), wrapDoc(el?el.innerHTML:''), 'application/msword'); });
+    var bC=document.getElementById('expCopy'); if(bC) bC.addEventListener('click', function(){ var t=txtResumen(); var ok=function(){ bC.textContent=window.T('Copiado','Copied'); setTimeout(function(){ bC.textContent=window.T('Copiar para mi médico','Copy for my doctor'); },1800); }; if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, function(){ dl(window.T('resumen-medico.txt','doctor-summary.txt'), t, 'text/plain'); }); } else { dl(window.T('resumen-medico.txt','doctor-summary.txt'), t, 'text/plain'); } });
+    document.addEventListener('kz:langchange', function(){ refl(); });
   })();
 
   // ---- Actividades nativas de estimulacion (sin puntaje, a ritmo, sin internet) ----
@@ -2919,9 +2923,11 @@
     var rateSel=document.getElementById('ttsRate'); if(rateSel){ try{ rateSel.value=localStorage.getItem('ttsrate')||'0.7'; }catch(e){} rateSel.addEventListener('change', function(){ try{ localStorage.setItem('ttsrate', rateSel.value); }catch(e){} if(sayText) say(sayText); }); }
     function rnd(a){ return a[Math.floor(Math.random()*a.length)]; }
     function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
-    var PRAISE=['Muy bien.','Qué lindo compartir esto.','Lo importante es participar.','Buen trabajo, juntos.','Qué bueno conversar de esto.'];
-    function pr(){ return rnd(PRAISE); }
+    // Andamiaje de UI dirigido al cuidador: se traduce (window.T). El contenido de los ejercicios queda en español (voz TTS es-AR).
+    function PRAISE(){ return [window.T('Muy bien.','Very good.'),window.T('Qué lindo compartir esto.','How nice to share this.'),window.T('Lo importante es participar.','What matters is taking part.'),window.T('Buen trabajo, juntos.','Good job, together.'),window.T('Qué bueno conversar de esto.','How good to talk about this.')]; }
+    function pr(){ return rnd(PRAISE()); }
 
+    // Contenido del ejercicio en español a propósito: son refranes/dichos rioplatenses y la voz TTS es es-AR; traducirlos rompería el ejercicio lingüístico.
     var REFRANES=[
       {q:'A quien madruga,', opts:['Dios lo ayuda','el sol lo saluda','le duele la espalda'], a:0},
       {q:'Más vale pájaro en mano', opts:['que cien volando','que dos en el árbol'], a:0},
@@ -2934,6 +2940,7 @@
       {q:'A caballo regalado', opts:['no se le miran los dientes','se lo cuida mejor'], a:0},
       {q:'Al mal tiempo,', opts:['buena cara','paraguas grande'], a:0}
     ];
+    // Contenido del ejercicio en español a propósito: rutinas cotidianas (nombres y pasos) para el paciente hispanohablante; la voz es es-AR.
     var RUTINAS=[
       {t:'Preparar unos mates', pasos:['Poner la yerba en el mate','Calentar el agua, sin que hierva','Cebar el agua despacio','Tomar y volver a cebar']},
       {t:'Lavarse las manos', pasos:['Abrir la canilla','Mojarse las manos','Ponerse jabón y frotar','Enjuagar y secar']},
@@ -2959,7 +2966,7 @@
       body.querySelectorAll('.actbtn').forEach(function(b){
         b.addEventListener('click', function(){
           var fb=document.getElementById('actfb');
-          fb.textContent=(b.dataset.ok==='1') ? (pr()+' El dicho es: "'+full+'".') : ('El dicho completo es: "'+full+'". ¡Gracias por intentarlo!');
+          fb.textContent=(b.dataset.ok==='1') ? (pr()+' '+window.T('El dicho es:','The saying is:')+' "'+full+'".') : (window.T('El dicho completo es:','The full saying is:')+' "'+full+'". '+window.T('¡Gracias por intentarlo!','Thanks for trying!'));
           fb.classList.add('show'); sayText=full;
           body.querySelectorAll('.actbtn').forEach(function(x){ x.disabled=true; if(x.dataset.ok==='1') x.classList.add('okmark'); });
         });
@@ -2968,18 +2975,19 @@
     function renderPaso(){
       var ru=RUTINAS[idx % RUTINAS.length];
       sayText='Ordene los pasos para '+ru.t;
-      var html='<p class="actq">Ordene los pasos: '+ru.t+'</p><p class="src">Toque los pasos en el orden que crea correcto.</p><div class="actopts" id="pool">';
+      var html='<p class="actq">'+window.T('Ordene los pasos:','Put the steps in order:')+' '+ru.t+'</p><p class="src">'+window.T('Toque los pasos en el orden que crea correcto.','Tap the steps in the order you think is correct.')+'</p><div class="actopts" id="pool">';
       shuffle(ru.pasos).forEach(function(p){ html+='<button class="actbtn" data-p="'+encodeURIComponent(p)+'">'+p+'</button>'; });
-      html+='</div><div id="chosenlist"></div><button class="linklike" id="seeOrder" type="button">Ver la rutina ordenada</button><p class="actfb" id="actfb"></p>';
+      html+='</div><div id="chosenlist"></div><button class="linklike" id="seeOrder" type="button">'+window.T('Ver la rutina ordenada','See the routine in order')+'</button><p class="actfb" id="actfb"></p>';
       body.innerHTML=html;
       var chosenArr=[];
       body.querySelectorAll('#pool .actbtn').forEach(function(b){
         b.addEventListener('click', function(){ if(b.disabled) return; b.disabled=true; b.style.opacity=0.45; chosenArr.push(decodeURIComponent(b.dataset.p)); document.getElementById('chosenlist').innerHTML='<ol class="chosenol">'+chosenArr.map(function(x){ return '<li>'+x+'</li>'; }).join('')+'</ol>'; });
       });
       document.getElementById('seeOrder').addEventListener('click', function(){
-        var fb=document.getElementById('actfb'); fb.innerHTML='<b>La rutina suele hacerse así:</b><ol class="chosenol">'+ru.pasos.map(function(x){ return '<li>'+x+'</li>'; }).join('')+'</ol>'+pr(); fb.classList.add('show'); sayText=ru.pasos.join('. ');
+        var fb=document.getElementById('actfb'); fb.innerHTML='<b>'+window.T('La rutina suele hacerse así:','The routine is usually done like this:')+'</b><ol class="chosenol">'+ru.pasos.map(function(x){ return '<li>'+x+'</li>'; }).join('')+'</ol>'+pr(); fb.classList.add('show'); sayText=ru.pasos.join('. ');
       });
     }
+    // Contenido del ejercicio en español a propósito: listas de palabras/vocabulario para memorizar; la voz TTS es es-AR (los rótulos t y las palabras las dice y lee el paciente hispanohablante).
     var MEMSETS=[
       {t:'Objetos de la casa', ver:['cuchara','taza','peine'], mas:['vaso','llave','toalla']},
       {t:'La lista del mercado', ver:['pan','leche','manzanas'], mas:['azúcar','fideos','huevos']},
@@ -2990,25 +2998,26 @@
     function renderMemoria(){
       memSet=MEMSETS[idx % MEMSETS.length];
       sayText='Mire bien estas cosas e intente recordarlas: '+memSet.ver.join(', ');
-      var html='<p class="actq">Mire y recuerde: '+memSet.t+'</p><p class="src">Mire bien estas palabras. Cuando esté listo, toque "Ya las miré".</p><div class="actopts">';
+      var html='<p class="actq">'+window.T('Mire y recuerde:','Look and remember:')+' '+memSet.t+'</p><p class="src">'+window.T('Mire bien estas palabras. Cuando esté listo, toque "Ya las miré".','Look closely at these words. When you are ready, tap "I looked at them".')+'</p><div class="actopts">';
       memSet.ver.forEach(function(w){ html+='<div class="memword">'+w+'</div>'; });
-      html+='</div><button id="memHide" type="button" class="memprim">Ya las miré</button>';
+      html+='</div><button id="memHide" type="button" class="memprim">'+window.T('Ya las miré','I looked at them')+'</button>';
       body.innerHTML=html;
       document.getElementById('memHide').addEventListener('click', memRecognize);
     }
     function memRecognize(){
       sayText='¿Cuáles de estas vio recién? Tóquelas.';
       var all=shuffle(memSet.ver.concat(memSet.mas));
-      var html='<p class="actq">¿Cuáles vio recién?</p><p class="src">Toque las que recuerde. Sin apuro.</p><div class="actopts">';
+      var html='<p class="actq">'+window.T('¿Cuáles vio recién?','Which ones did you just see?')+'</p><p class="src">'+window.T('Toque las que recuerde. Sin apuro.','Tap the ones you remember. No rush.')+'</p><div class="actopts">';
       all.forEach(function(w){ html+='<button class="actbtn" data-ok="'+(memSet.ver.indexOf(w)>=0?'1':'0')+'">'+w+'</button>'; });
-      html+='</div><button class="linklike" id="memSee" type="button">Ver las correctas</button><p class="actfb" id="actfb"></p>';
+      html+='</div><button class="linklike" id="memSee" type="button">'+window.T('Ver las correctas','See the correct ones')+'</button><p class="actfb" id="actfb"></p>';
       body.innerHTML=html;
       body.querySelectorAll('.actbtn').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('okmark'); }); });
       document.getElementById('memSee').addEventListener('click', function(){
         body.querySelectorAll('.actbtn').forEach(function(b){ if(b.dataset.ok==='1') b.classList.add('okmark'); b.disabled=true; });
-        var fb=document.getElementById('actfb'); fb.textContent='Las que estaban eran: '+memSet.ver.join(', ')+'. '+pr(); fb.classList.add('show'); sayText='Las que estaban eran: '+memSet.ver.join(', ');
+        var fb=document.getElementById('actfb'); fb.textContent=window.T('Las que estaban eran:','The ones there were:')+' '+memSet.ver.join(', ')+'. '+pr(); fb.classList.add('show'); sayText='Las que estaban eran: '+memSet.ver.join(', ');
       });
     }
+    // Contenido del ejercicio en español a propósito: categorías y ejemplos de vocabulario (fluidez verbal) para el paciente hispanohablante; la voz es es-AR.
     var CATS2=[
       {c:'frutas', ej:['manzana','banana','naranja','pera','uva']},
       {c:'animales', ej:['perro','gato','vaca','caballo','gallina']},
@@ -3019,16 +3028,18 @@
     function renderCategorias(){
       var x=CATS2[idx % CATS2.length];
       sayText='Nombre todas las '+x.c+' que pueda. No hay apuro.';
-      body.innerHTML='<p class="actq">Nombre '+x.c+' que pueda</p><p class="src">Dígalas en voz alta, juntos, con calma. Vale repetir y ayudarse. No se cuentan ni se corrigen: es para conversar.</p><button class="linklike" id="catEj" type="button">Ver algunos ejemplos</button><p class="actfb" id="actfb"></p>';
-      document.getElementById('catEj').addEventListener('click', function(){ var fb=document.getElementById('actfb'); fb.textContent='Por ejemplo: '+x.ej.join(', ')+'… ¿se le ocurren otras? '+pr(); fb.classList.add('show'); sayText='Por ejemplo: '+x.ej.join(', '); });
+      body.innerHTML='<p class="actq">'+window.T('Nombre '+x.c+' que pueda','Name as many '+x.c+' as you can')+'</p><p class="src">'+window.T('Dígalas en voz alta, juntos, con calma. Vale repetir y ayudarse. No se cuentan ni se corrigen: es para conversar.','Say them out loud, together, calmly. Repeating and helping each other is fine. They are not counted or corrected: it is to chat.')+'</p><button class="linklike" id="catEj" type="button">'+window.T('Ver algunos ejemplos','See some examples')+'</button><p class="actfb" id="actfb"></p>';
+      document.getElementById('catEj').addEventListener('click', function(){ var fb=document.getElementById('actfb'); fb.textContent=window.T('Por ejemplo:','For example:')+' '+x.ej.join(', ')+'… '+window.T('¿se le ocurren otras?','can you think of others?')+' '+pr(); fb.classList.add('show'); sayText='Por ejemplo: '+x.ej.join(', '); });
     }
     function renderContar(){
       var n=(idx % 5)+1; var W=['','uno','dos','tres','cuatro','cinco'];
       sayText='¿Cuántos hay? Muestre con los dedos cuántos hay.';
       var dots=''; for(var i=0;i<n;i++){ dots+='<span class="dot"></span>'; }
-      body.innerHTML='<p class="actq">¿Cuántos hay?</p><div class="dots">'+dots+'</div><p class="src">Pídale que muestre con los dedos cuántos hay. Sin apuro.</p><button class="linklike" id="seeN" type="button">Ver la respuesta</button><p class="actfb" id="actfb"></p>';
-      document.getElementById('seeN').addEventListener('click', function(){ var fb=document.getElementById('actfb'); fb.textContent='Hay '+n+' ('+W[n]+'). '+pr(); fb.classList.add('show'); sayText='Hay '+W[n]; });
+      body.innerHTML='<p class="actq">'+window.T('¿Cuántos hay?','How many are there?')+'</p><div class="dots">'+dots+'</div><p class="src">'+window.T('Pídale que muestre con los dedos cuántos hay. Sin apuro.','Ask them to show with their fingers how many there are. No rush.')+'</p><button class="linklike" id="seeN" type="button">'+window.T('Ver la respuesta','See the answer')+'</button><p class="actfb" id="actfb"></p>';
+      document.getElementById('seeN').addEventListener('click', function(){ var fb=document.getElementById('actfb'); fb.textContent=window.T('Hay ','There are ')+n+' ('+W[n]+'). '+pr(); fb.classList.add('show'); sayText='Hay '+W[n]; });
     }
+    // Re-render del andamiaje de UI al cambiar de idioma si hay un ejercicio abierto (el contenido del ejercicio sigue en español).
+    document.addEventListener('kz:langchange', function(){ if(act && player && player.style.display!=='none'){ render(); } });
   })();
 
   // ---- Idioma ES / EN (autodeteccion del navegador + toggle manual) ----
