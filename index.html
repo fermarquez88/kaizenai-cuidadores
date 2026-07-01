@@ -3073,8 +3073,13 @@
     var tbtn=document.getElementById("langToggle");
     if(tbtn) tbtn.addEventListener("click", function(){ setLang(window.kzLang()==="en"?"es":"en", true); });
     var saved=null; try{ saved=localStorage.getItem("lang"); }catch(e){}
-    var nav=((navigator.language||navigator.userLanguage||"es")+"").toLowerCase();
-    apply(saved || (nav.indexOf("en")===0?"en":"es"));   // autodeteccion; no persiste hasta que el usuario elige
+    // Autodeteccion conservadora: solo ingles si el navegador NO tiene ningun espanol en sus preferencias
+    // (protege a la audiencia primaria argentina con telefono en locale ingles). No persiste hasta que el usuario elige.
+    var langs=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||navigator.userLanguage||"es"];
+    var hasEs=false;
+    for(var _i=0;_i<langs.length;_i++){ if(((langs[_i]||"")+"").toLowerCase().indexOf("es")===0) hasEs=true; }
+    var primaryEn=((navigator.language||navigator.userLanguage||"es")+"").toLowerCase().indexOf("en")===0;
+    apply(saved || ((primaryEn && !hasEs) ? "en" : "es"));
   })();
   document.querySelectorAll("[data-sec]").forEach(function(b){ b.addEventListener("click", function(){ var s=b.dataset.sec; setTimeout(function(){ var el=document.getElementById(s); if(el) el.scrollIntoView({block:"start", behavior:"smooth"}); }, 90); }); });
 
