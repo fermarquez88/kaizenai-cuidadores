@@ -7,8 +7,8 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="theme-color" content="#0f6b80">
-<meta name="description" content="Guía personalizada para cuidar a una persona con demencia y para cuidarse usted. Qué hacer en cada situación, según lo que más le cuesta hoy.">
-<title>KaizenAI — Guía para cuidadores (Demencia)</title>
+<meta name="description" data-i18n-content="meta.desc" content="Guía personalizada para cuidar a una persona con demencia y para cuidarse usted. Qué hacer en cada situación, según lo que más le cuesta hoy.">
+<title data-i18n="meta.title">KaizenAI — Guía para cuidadores (Demencia)</title>
 <meta name="theme-color" content="#0f6b80">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -367,7 +367,7 @@
     <span class="txt"><span class="n">KaizenAI</span><span class="s" data-i18n="top.sub">Cuidadores · Demencia</span></span>
   </div>
   <div class="fontctl" role="group" aria-label="Tamaño de letra">
-    <button id="langToggle" class="langbtn" type="button" aria-label="English / Español" style="display:none">EN</button>
+    <button id="langToggle" class="langbtn" type="button" aria-label="Cambiar a inglés">EN</button>
     <span class="lbl" data-i18n="top.letra">Letra</span>
     <button id="fsDown" aria-label="Achicar letra" title="Achicar letra">A<small>−</small></button>
     <button id="fsUp" aria-label="Agrandar letra" title="Agrandar letra">A<small>+</small></button>
@@ -1848,6 +1848,50 @@
   <button data-tab="colaborar" aria-pressed="false"><svg aria-hidden="true"><use href="#i-people"/></svg><span data-i18n="nav.colaborar">Colaborar</span></button>
 </nav>
 
+<script type="application/json" id="i18n-en">
+{
+ "nav.entender": "Understand",
+ "nav.hacer": "What to do",
+ "nav.cuidarse": "Self-care",
+ "nav.recursos": "Resources",
+ "nav.colaborar": "Collaborate",
+ "top.sub": "Caregivers · Dementia",
+ "onb.title": "Let's set up your guide",
+ "onb.intro": "Two quick questions to tailor the guide to you. Your answers stay only on this phone.",
+ "onb.qedad": "How old is the caregiver?",
+ "onb.e1": "Under 40",
+ "onb.e2": "40 to 64",
+ "onb.e3": "65 or older",
+ "onb.qeduc": "What level did you study?",
+ "onb.ed1": "Primary or secondary",
+ "onb.ed2": "Tertiary or university",
+ "onb.start": "See my guide",
+ "onb.skip": "I would rather see everything without personalizing",
+ "hub.title": "What do you need today?",
+ "hub.intro": "Choose where to start. You can move around with the menu below. What you personalized before is kept.",
+ "hub.hacer": "Solve a situation now",
+ "hub.entender": "Understand the illness",
+ "hub.cuidarse": "Take care of myself",
+ "hub.reonb": "Personalize my guide again",
+ "h.ent.t": "Understand the illness",
+ "h.ent.l": "Knowing what is happening helps you accompany better — and take care of yourself.",
+ "h.hac.t": "What to do in each situation",
+ "h.hac.l": "In each topic: <b>Right now</b>, <b>To sustain</b> and <b>Understand in depth</b>.",
+ "h.dice.t": "DICE: a method for any behavior",
+ "h.dice.l": "Instead of scattered tips, a way of thinking that works for any difficult situation.",
+ "h.cui.t": "Take care of yourself to be able to care",
+ "h.cui.l": "If you burn out, you cannot care well. Taking care of yourself is not selfish.",
+ "h.rec.t": "Resources and materials",
+ "h.rec.l": "Exercises for the mind, printable sheets and materials from official sources.",
+ "h.apo.t": "Where to ask for help",
+ "h.apo.l": "Trusted places to support you and teach you more.",
+ "ban.urg": "First: is it an emergency?",
+ "top.letra": "Text",
+ "meta.title": "KaizenAI — Caregiver guide (Dementia)",
+ "meta.desc": "Personalized guide to care for a person with dementia and to take care of yourself. What to do in each situation, based on what is hardest for you today."
+}
+</script>
+
 <script>
   // ---- Tamaño de letra ----
   var sizes = [16, 18, 20, 23, 26], idx = 2;
@@ -2330,21 +2374,34 @@
     }
   })();
 
-  // ---- Idioma ES/EN (pantallas clave) ----
+  // ---- Idioma ES / EN (autodeteccion del navegador + toggle manual) ----
   (function(){
-    var DICT={en:{"nav.entender": "Understand", "nav.hacer": "What to do", "nav.cuidarse": "Self-care", "nav.recursos": "Resources", "nav.colaborar": "Collaborate", "top.sub": "Caregivers · Dementia", "onb.title": "Let's set up your guide", "onb.intro": "Two quick questions to tailor the guide to you. Your answers stay only on this phone.", "onb.qedad": "How old is the caregiver?", "onb.e1": "Under 40", "onb.e2": "40 to 64", "onb.e3": "65 or older", "onb.qeduc": "What level did you study?", "onb.ed1": "Primary or secondary", "onb.ed2": "Tertiary or university", "onb.start": "See my guide", "onb.skip": "I would rather see everything without personalizing", "hub.title": "What do you need today?", "hub.intro": "Choose where to start. You can move around with the menu below. What you personalized before is kept.", "hub.hacer": "Solve a situation now", "hub.entender": "Understand the illness", "hub.cuidarse": "Take care of myself", "hub.reonb": "Personalize my guide again", "h.ent.t": "Understand the illness", "h.ent.l": "Knowing what is happening helps you accompany better — and take care of yourself.", "h.hac.t": "What to do in each situation", "h.hac.l": "In each topic: <b>Right now</b>, <b>To sustain</b> and <b>Understand in depth</b>.", "h.dice.t": "DICE: a method for any behavior", "h.dice.l": "Instead of scattered tips, a way of thinking that works for any difficult situation.", "h.cui.t": "Take care of yourself to be able to care", "h.cui.l": "If you burn out, you cannot care well. Taking care of yourself is not selfish.", "h.rec.t": "Resources and materials", "h.rec.l": "Exercises for the mind, printable sheets and materials from official sources.", "h.apo.t": "Where to ask for help", "h.apo.l": "Trusted places to support you and teach you more.", "ban.urg": "First: is it an emergency?", "top.letra": "Text"}};
+    var DICT={en:{}};
+    try{ var _j=document.getElementById("i18n-en"); if(_j) DICT.en=JSON.parse(_j.textContent||"{}"); }catch(e){}
     var nodes=document.querySelectorAll("[data-i18n]"); var orig={};
     nodes.forEach(function(n){ orig[n.getAttribute("data-i18n")]=n.innerHTML; });
-    function setLang(l){
-      document.documentElement.lang = (l==="en"?"en":"es");
-      document.title = (l==="en"?"KaizenAI — Caregiver guide (Dementia)":"KaizenAI — Guía para cuidadores (Demencia)");
-      nodes.forEach(function(n){ var k=n.getAttribute("data-i18n"); if(l==="en" && DICT.en[k]!=null) n.innerHTML=DICT.en[k]; else n.innerHTML=orig[k]; });
-      var b=document.getElementById("langToggle"); if(b) b.textContent=(l==="en"?"ES":"EN");
-      try{ localStorage.setItem("lang", l); }catch(e){}
+    // atributos traducibles: [attrDOM, data-attr cuyo valor es la clave del DICT]
+    var ATTRMAP=[["aria-label","data-i18n-aria"],["title","data-i18n-title"],["placeholder","data-i18n-ph"],["content","data-i18n-content"]];
+    var anodes=[];
+    ATTRMAP.forEach(function(m){ document.querySelectorAll("["+m[1]+"]").forEach(function(el){
+      anodes.push({el:el,attr:m[0],key:el.getAttribute(m[1]),orig:el.getAttribute(m[0])}); }); });
+    window.kzLang=function(){ try{ return localStorage.getItem("lang")==="en"?"en":"es"; }catch(e){ return "es"; } };
+    window.T=function(es,en){ return window.kzLang()==="en"?en:es; };
+    function apply(l){
+      var en=(l==="en");
+      document.documentElement.lang=en?"en":"es";
+      nodes.forEach(function(n){ var k=n.getAttribute("data-i18n"); n.innerHTML=(en&&DICT.en[k]!=null)?DICT.en[k]:orig[k]; });
+      anodes.forEach(function(a){ var v=(en&&DICT.en[a.key]!=null)?DICT.en[a.key]:a.orig; if(v!=null) a.el.setAttribute(a.attr,v); });
+      var tb=document.getElementById("langToggle"); if(tb){ tb.textContent=en?"ES":"EN"; tb.setAttribute("aria-label",en?"Switch to Spanish":"Cambiar a ingles"); }
+      try{ document.dispatchEvent(new Event("kz:langchange")); }catch(e){}
     }
-    var b=document.getElementById("langToggle");
-    if(b) b.addEventListener("click", function(){ setLang((localStorage.getItem("lang")==="en")?"es":"en"); });
-    try{ if(localStorage.getItem("lang")==="en") setLang("en"); }catch(e){}
+    function setLang(l,persist){ apply(l); if(persist){ try{ localStorage.setItem("lang",l); }catch(e){} } }
+    window.kzSetLang=setLang;
+    var tbtn=document.getElementById("langToggle");
+    if(tbtn) tbtn.addEventListener("click", function(){ setLang(window.kzLang()==="en"?"es":"en", true); });
+    var saved=null; try{ saved=localStorage.getItem("lang"); }catch(e){}
+    var nav=((navigator.language||navigator.userLanguage||"es")+"").toLowerCase();
+    apply(saved || (nav.indexOf("en")===0?"en":"es"));   // autodeteccion; no persiste hasta que el usuario elige
   })();
   document.querySelectorAll("[data-sec]").forEach(function(b){ b.addEventListener("click", function(){ var s=b.dataset.sec; setTimeout(function(){ var el=document.getElementById(s); if(el) el.scrollIntoView({block:"start", behavior:"smooth"}); }, 90); }); });
 
