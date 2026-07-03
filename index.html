@@ -174,6 +174,8 @@
   .onb.show{display:block}
   .onb .inner{max-width:560px; margin:0 auto}
   .onb .logo{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+  .onbhead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+  .onbhead .logo{margin-bottom:0}
   .onb .logo .mark{width:38px;height:38px;border-radius:11px;background:var(--brand);display:grid;place-items:center}
   .onb .logo .mark svg{width:22px;height:22px;stroke:#fff;stroke-width:1.7;fill:none}
   .onb h1{font-size:1.45rem; margin:.4em 0 .1em}
@@ -292,7 +294,7 @@
 <!-- ====== ONBOARDING ====== -->
 <div class="onb" id="onb" role="dialog" aria-label="Personalizar su guía" data-i18n-aria="onb.aria">
   <div class="inner">
-    <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div>
+    <div class="onbhead"><div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div><button class="langbtn js-lang" type="button" aria-label="Cambiar a inglés">EN</button></div>
     <h1 data-i18n="onb.title">Vamos a armar su guía</h1>
     <p class="intro" data-i18n="onb.intro">Dos preguntas rápidas para adaptar la guía a usted. Sus respuestas quedan solo en este teléfono.</p>
 
@@ -346,7 +348,7 @@
 
 <div class="onb" id="home" role="dialog" aria-label="Inicio" data-i18n-aria="home.aria">
   <div class="inner">
-    <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div>
+    <div class="onbhead"><div class="logo"><span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-brand"/></svg></span></div><button class="langbtn js-lang" type="button" aria-label="Cambiar a inglés">EN</button></div>
     <h1 data-i18n="hub.title">¿Qué necesita hoy?</h1>
     <p class="intro" data-i18n="hub.intro">Elija por dónde empezar. Después puede moverse con el menú de abajo. Lo que personalizó antes se mantiene.</p>
     <div id="homeOpts">
@@ -367,7 +369,7 @@
     <span class="txt"><span class="n">KaizenAI</span><span class="s" data-i18n="top.sub">Cuidadores · Demencia</span></span>
   </div>
   <div class="fontctl" role="group" aria-label="Tamaño de letra" data-i18n-aria="top.fontaria">
-    <button id="langToggle" class="langbtn" type="button" aria-label="Cambiar a inglés">EN</button>
+    <button id="langToggle" class="langbtn js-lang" type="button" aria-label="Cambiar a inglés">EN</button>
     <span class="lbl" data-i18n="top.letra">Letra</span>
     <button id="fsDown" aria-label="Achicar letra" title="Achicar letra" data-i18n-aria="top.fsdown" data-i18n-title="top.fsdown">A<small>−</small></button>
     <button id="fsUp" aria-label="Agrandar letra" title="Agrandar letra" data-i18n-aria="top.fsup" data-i18n-title="top.fsup">A<small>+</small></button>
@@ -3065,13 +3067,12 @@
         window.__kzlang=l;
       }
       document.documentElement.lang=en?"en":"es";
-      var tb=document.getElementById("langToggle"); if(tb){ tb.textContent=en?"ES":"EN"; tb.setAttribute("aria-label",en?"Switch to Spanish":"Cambiar a ingles"); }
+      document.querySelectorAll(".js-lang").forEach(function(tb){ tb.textContent=en?"ES":"EN"; tb.setAttribute("aria-label",en?"Switch to Spanish":"Cambiar a ingles"); });
       try{ document.dispatchEvent(new Event("kz:langchange")); }catch(e){}
     }
     function setLang(l,persist){ apply(l); if(persist){ try{ localStorage.setItem("lang",l); }catch(e){} } }
     window.kzSetLang=setLang;
-    var tbtn=document.getElementById("langToggle");
-    if(tbtn) tbtn.addEventListener("click", function(){ setLang(window.kzLang()==="en"?"es":"en", true); });
+    document.querySelectorAll(".js-lang").forEach(function(tbtn){ tbtn.addEventListener("click", function(){ setLang(window.kzLang()==="en"?"es":"en", true); }); });
     var saved=null; try{ saved=localStorage.getItem("lang"); }catch(e){}
     // Autodeteccion conservadora: solo ingles si el navegador NO tiene ningun espanol en sus preferencias
     // (protege a la audiencia primaria argentina con telefono en locale ingles). No persiste hasta que el usuario elige.
