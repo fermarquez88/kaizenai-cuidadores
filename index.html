@@ -55,6 +55,9 @@
   .lede{color:var(--ink-soft); font-size:1.02rem; margin:0 0 4px}
 
   section{margin-top:13px}
+  .card.flash{animation:flash 1.6s ease}
+  .support .src a{overflow-wrap:anywhere; word-break:break-all}
+  @keyframes flash{0%,40%{box-shadow:0 0 0 4px var(--brand)} 100%{box-shadow:var(--shadow)}}
   .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
   .card p{margin:.3em 0 .7em}
   .head{display:flex; align-items:center; gap:12px; margin-bottom:8px}
@@ -275,7 +278,7 @@
       <button class="opt" data-home="hacer"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-shield"/></svg> <span data-i18n="hub.hacer">Resolver una situación ahora</span></button>
       <button class="opt" data-home="entender"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-book"/></svg> <span data-i18n="hub.entender">Entender la enfermedad</span></button>
       <button class="opt" data-home="cuidarse"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-heart"/></svg> <span data-i18n="hub.cuidarse">Cuidarme yo</span></button>
-      <button class="opt" data-home="recursos"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-hand"/></svg> <span data-i18n="hub.recursos">Pedir ayuda y buscar recursos</span></button>
+      <button class="opt" data-home="apoyo"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-hand"/></svg> <span data-i18n="hub.recursos">Pedir ayuda: turnos y contactos</span></button>
       <button class="opt" data-home="recursos" data-anchor="comunidad"><svg class="ic" aria-hidden="true" style="flex:0 0 auto"><use href="#i-people"/></svg> <span data-i18n="hub.comunidad">Unirse a la comunidad</span></button>
     </div>
     <button class="opt" id="homeLast" style="display:none"></button>
@@ -1479,7 +1482,7 @@
  "top.fsdown": "Shrink text",
  "top.fsup": "Enlarge text",
  "nav.aria": "Sections",
- "hub.recursos": "Ask for help and find resources",
+ "hub.recursos": "Ask for help: appointments and contacts",
  "hub.comunidad": "Join the community",
  "ent.k": "To begin",
  "ent.hero": "The person with dementia keeps their <b>dignity and their rights</b> at every stage: to accompany them is to recognize what they feel, what they can still do, and who they are.<span class=\"src\" style=\"border:0;margin-top:5px\">Sources: ADI (Alzheimer's Disease International); WHO; Convention on the Rights of Persons with Disabilities (UN); person-centered care (Kitwood).</span>",
@@ -1896,7 +1899,7 @@
   }
   document.querySelectorAll('#homeOpts .opt').forEach(function(b){
     b.addEventListener('click', function(){ document.getElementById('home').classList.remove('show'); showTab(b.dataset.home);
-      var an=b.dataset.anchor && document.getElementById(b.dataset.anchor); if(an) setTimeout(function(){ an.scrollIntoView({block:'start', behavior:'instant'}); },30); });
+      var an=b.dataset.anchor && document.getElementById(b.dataset.anchor); if(an) setTimeout(function(){ an.scrollIntoView({block:'center', behavior:'instant'}); an.classList.remove('flash'); void an.offsetWidth; an.classList.add('flash'); setTimeout(function(){ an.classList.remove('flash'); },1600); },30); });
   });
   (function(){
     var hl=document.getElementById('homeLast');
