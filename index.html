@@ -1844,7 +1844,7 @@
  "apo.kicker": "You are not alone",
  "apo.back": "‹ Back to Help",
  "apo.turnos.h": "Appointments and consultations",
- "apo.turnos.sub": "For <b>appointments</b> at the Memory Unit, use the hospital\'s official channels:",
+ "apo.turnos.sub": "For <b>appointments</b> at the Memory Unit, use the hospital's official channels:",
  "apo.turnos.rawson.t": "Memory Unit — Hospital Rawson (public)",
  "apo.turnos.rawson.d": "Appointments: 0800-333-0008 or 264 413-4221 (Mon–Fri, 7 am to 7 pm), or through CIDI. Clinic on Thursdays from 2 pm at Outpatient Clinics.",
  "apo.turnos.disc": "<b>Important:</b> WhatsApp is not used for appointments, administrative paperwork, or emergencies. <b>Emergencies</b> must be handled in an <b>emergency room</b>, where the resources for immediate and safe care are available.",
@@ -2325,7 +2325,7 @@
   // ---- Idioma ES / EN (autodeteccion del navegador + toggle manual) ----
   (function(){
     var DICT={en:{}};
-    try{ var _j=document.getElementById("i18n-en"); if(_j) DICT.en=JSON.parse(_j.textContent||"{}"); }catch(e){}
+    try{ var _j=document.getElementById("i18n-en"); if(_j) DICT.en=JSON.parse(_j.textContent||"{}"); }catch(e){ console.error("i18n-en: diccionario en ingles invalido", e); }
     var nodes=document.querySelectorAll("[data-i18n]"); var orig={};
     nodes.forEach(function(n){ orig[n.getAttribute("data-i18n")]=n.innerHTML; });
     // atributos traducibles: [attrDOM, data-attr cuyo valor es la clave del DICT]
